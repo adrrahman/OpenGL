@@ -1,5 +1,6 @@
 import pygame
 from math import cos, sin
+import numpy
 
 from OpenGL.raw.GLUT import glutSolidTorus
 from pygame.locals import *
@@ -118,11 +119,31 @@ verticies = (
     (1.7,0.65,0.6),
 )
 
+radius = 0.2
+side_num = 16
+
+red = (1, 0, 0)
+blue = (0, 0, 1)
+color = (red, blue)
+
 def Car():
     glBegin(GL_QUADS)
     for x,y,z in verticies:
         glVertex3f(x,y,z)
     glEnd()
+
+def drawCircle(offset, x, y):
+	glBegin(GL_POLYGON)
+
+	colorNow = 1
+	for vertex in range(0, side_num):
+		# print(vertex)
+		colorNow = (colorNow+1)%2
+		glColor3f(color[colorNow][0], color[colorNow][1], color[colorNow][2])
+		angle = float(vertex) * 2.0 * numpy.pi / side_num + offset
+		glVertex3f(numpy.cos(angle)*radius+x, numpy.sin(angle)*radius+y, 0)
+
+	glEnd()
 
 def main():
     pygame.init()
@@ -131,10 +152,11 @@ def main():
 
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
 
-    glTranslatef(0.0,0.0,-5)
+    glTranslatef(-1.0,0.0,-5)
 
     glRotatef(0,0,0,0)
 
+    offset = 0
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -144,6 +166,9 @@ def main():
         #glRotatef(1, 3, 1, 1)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         Car()
+        offset += 2
+        drawCircle(offset,0.5,0.25)
+        drawCircle(offset,1.8,0.25)
         pygame.display.flip()
         pygame.time.wait(10)
 
