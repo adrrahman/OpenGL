@@ -25,14 +25,18 @@ class VBOJiggle(object):
 
         #verts = 2*np.random.rand(nvert,2) - 1
         verts = (
-            (0.3,0.9),
-            (0.7,0.9),
-            (0.7,0.6),
-            (0.9,0.6),
-            (0.9,0.4),
-            (0.1,0.4),
-            (0.1,0.6),
-            (0.3,0.6)
+            # (0.3,0.9),
+            # (0.7,0.9),
+            # (0.7,0.6),
+            # (0.9,0.6),
+            # (0.9,0.4),
+            # (0.1,0.4),
+            # (0.1,0.6),
+            # (0.3,0.6)
+            (0.1,0.1,0.1),
+            (0.1,0.1,0.6),
+            (0.1,0.7,0.6),
+            (0.1,0.7,0.6)
         )
         self.verts = np.require(verts,np.float32,'F')
         self.vbo = vbo.VBO(self.verts)
@@ -91,10 +95,13 @@ def drawCircle(offset, x, y):
 
 	glEnd()
 
+
 if __name__ == '__main__':
     pygame.init()
     display = (1000,1000)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+    LEFT = 1
+    RIGHT = 3
 
     gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
 
@@ -118,6 +125,11 @@ if __name__ == '__main__':
                     glRotatef(15,-1,0,0)
                 if event.key == pygame.K_DOWN:
                     glRotatef(15,1,0,0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+            	if event.button == LEFT:
+            		glRotatef(15,0,-1,0)
+            	if event.button == RIGHT:
+            		glRotatef(15,0,1,0)
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         demo.draw()
         offset += 2
