@@ -25,11 +25,20 @@ def resize(Width, Height):
     glLoadIdentity()
     gluPerspective(45.0, float(Width)/float(Height), 0.1, 100.0)
 
-rotateX=0
-rotateZ=0
-offsetX=0
+rotateX= 0
+rotateZ= 0
+offsetX= 0
+offsetZ= 0
+
+transZ= -2
+offZ= 0
+
+prev_mouse_X= 0
+prev_mouse_Y= 0
+firstTime= True
+
 def draw():
-    global rotateX, offsetX, rotateZ
+    global rotateX, offsetX, rotateZ, offsetZ, transZ
     # clear
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
@@ -37,9 +46,12 @@ def draw():
     glMatrixMode(GL_MODELVIEW)
     glLoadIdentity()
     rotateX+=offsetX
+    rotateZ+=offsetZ
     #pitch+=0.27
-    glTranslatef(0.0, 0.0, -2.0)
+    transZ+=offZ
+    glTranslatef(0.0, 0.0, transZ)
     glRotatef(rotateX, 0, 1, 0)
+    glRotatef(rotateZ, 1, 0, 0)
     #glRotatef(pitch, 1, 0, 0)
 
     # cube
@@ -200,6 +212,12 @@ def keyboard_down(key, x, y):
     elif (key=='d'):
         global offsetX
         offsetX= -0.1
+    elif (key=='w'):
+        global offsetZ
+        offsetZ= 0.1
+    elif (key=='s'):
+        global offsetZ
+        offsetZ= -0.1
 
 def keyboard_up(key, x, y):
     if (key=='a'):
@@ -208,17 +226,51 @@ def keyboard_up(key, x, y):
     elif (key=='d'):
         global offsetX
         offsetX= 0
+    elif (key=='w'):
+        global offsetZ
+        offsetZ= 0
+    elif (key=='s'):
+        global offsetZ
+        offsetZ= 0
+
+def callback_mouse_button(button, state, x, y):
+    # printf ("%d, %d\n", button, state);
+    # Note: if it GLUT_LEFT_BUTTON isn't defined use
+    # 0 for the left mouse button
+    # 1 for the middle mouse button
+    # 2 for the right mouse button
+    if (button == 0 and state == GLUT_DOWN):
+        print("left button")
+        print("pressed")
+        global offZ
+        offZ= 0.01
+    elif (button == 0 and state == GLUT_UP):
+        print("left button")
+        print("released")
+        global offZ
+        offZ= 0
+    elif (button == 2 and state == GLUT_DOWN):
+        print("right button")
+        print("pressed")
+        global offZ
+        offZ= -0.01
+    elif (button == 2 and state == GLUT_UP):
+        print("right button")
+        print("released")
+        global offZ
+        offZ= 0
 
 if __name__=="__main__":
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(256, 256)
+    glutInitWindowSize(512, 512)
     glutCreateWindow(b"vbo")
     glutDisplayFunc(disp_func)
     glutIdleFunc(disp_func)
     glutReshapeFunc(reshape_func)
     glutKeyboardFunc(keyboard_down)
     glutKeyboardUpFunc(keyboard_up)
+    glutMouseFunc (callback_mouse_button)
 
     initialize()
 
