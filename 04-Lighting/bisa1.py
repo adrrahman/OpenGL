@@ -222,20 +222,9 @@ def main():
 
 		transformLoc = glGetUniformLocation(shader, "transform")
 		lightLoc = glGetUniformLocation(shader, "light")
-		# lightTransform = glGetUniformLocation(lightingShader, "transform")
 
 		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, rot_x * rot_y)
 		glUniformMatrix4fv(lightLoc, 1, GL_FALSE, rot_x * rot_y)
-		# glUniformMatrix4fv(lightingShader, 1, GL_FALSE, rot_x * rot_y)
-
-		# glUniformMatrix3fv(glGetUniformLocation())
-
-		# glEnable(GL_LIGHT0)
-		# glLightfv(GL_LIGHT0, GL_POSITION, flashLightPos)
-		# glLightfv(GL_LIGHT0, GL_AMBIENT, flashLightColor)
-		# glLightfv(GL_LIGHT0, GL_DIFFUSE, flashLightColor)
-		# glLightfv(GL_LIGHT0, GL_SPECULAR, flashLightColor)
-		# glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, flashLightDir)
 
 		glDrawElements(GL_TRIANGLES, len(indices), GL_UNSIGNED_INT, None)
 
