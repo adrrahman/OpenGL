@@ -5,7 +5,8 @@ import numpy
 import pyrr
 from PIL import Image
 
-rotateX= 0
+rotateX = 0
+rotateY = 0
 
 def main():
 
@@ -203,8 +204,8 @@ def main():
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-		rot_x = pyrr.Matrix44.from_x_rotation(0.5 * glfw.get_time() )
-		rot_y = pyrr.Matrix44.from_y_rotation(0.5 * glfw.get_time() )
+		rot_x = pyrr.Matrix44.from_x_rotation(0.5 * rotateX )
+		rot_y = pyrr.Matrix44.from_y_rotation(0.5 * rotateY )
 
 		transformLoc = glGetUniformLocation(shader, "transform")
 		lightLoc = glGetUniformLocation(shader, "light")
@@ -219,7 +220,17 @@ def main():
 	glfw.terminate()
 
 def keyCallback(window, key, scancode, action, mods):
+	global rotateX, rotateY
 	print(key)
+	print(rotateY)
+	if (key==262):
+		rotateY+=0.5
+	elif (key==263):
+		rotateY-=0.5
+	elif (key==264):
+		rotateX+=0.5
+	elif (key==265):
+		rotateX-=0.5
 
 if __name__ == "__main__":
 	main()
