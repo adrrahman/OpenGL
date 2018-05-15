@@ -82,4 +82,4 @@ def draw_cube(x, y, z):
 		for vertex in edge:
 			glVertex3fv(vertices[vertex])
 	glEnd()
-	glTranslatef(-x, -y, 0)
+	glTranslatef(-x, -y, -z)
