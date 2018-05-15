@@ -45,7 +45,7 @@ class ParticleHujan():
     def __init__(self,startz):
         self.x = random.uniform(-10,10)
         self.y = random.uniform(-10,10)
-        self.z = random.uniform(5,8)
+        self.z = random.uniform(1,8)
         self.initz = self.z
         self.col = blue
         self.sx = self.x
@@ -54,7 +54,7 @@ class ParticleHujan():
 
     def move(self):
         if (self.z < -0.4):
-            self.z = self.initz
+            self.z = 8
         else:
             self.z = self.z - 0.2
 
