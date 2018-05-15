@@ -45,7 +45,7 @@ class ParticleHujan():
     def __init__(self,startz):
         self.x = random.uniform(-10,10)
         self.y = random.uniform(-10,10)
-        self.z = random.uniform(-10,10)
+        self.z = 0
         self.col = blue
         self.sx = self.x
         self.sy = self.y
@@ -169,7 +169,6 @@ while 1:
         ptemp.move()
         glColor3f(1, 207, 248)
         utils.draw_cube(ptemp.x,ptemp.y,ptemp.z)
-
 
     pygame.display.flip()
 
