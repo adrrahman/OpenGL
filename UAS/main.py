@@ -42,6 +42,26 @@ class hujan():
         else:
             self.z -= self.deltaZ
 
+ground_surfaces = (0,1,2,3)
+
+ground_vertices = (
+    (-100,-100,-0.1),
+    (100,100,-0.1),
+    (-100,100,-0.1),
+    (100,-100,-0.1),
+)
+
+
+def Ground():
+    glBegin(GL_QUADS)
+
+    x = 0
+    for vertex in ground_vertices:
+        x += 1
+        glColor3fv((0, 1, 1))
+        glVertex3fv(vertex)
+    glEnd()
+
 pygame.init()
 viewport = (800,600)
 hx = viewport[0]/2
@@ -129,7 +149,7 @@ while 1:
     glRotate(ry, 1, 0, 0)
     glRotate(rx, 0, 0, 1)
     glCallList(obj.gl_list)
-
+    Ground()
     for k in partikel_knalpot:
         k.move()
         glColor3f(1, 1, 1)
