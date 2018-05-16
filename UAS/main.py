@@ -35,9 +35,6 @@ class hujan():
         self.z = random.uniform(1,8)
         self.deltaZ = 0.05
         self.color = (1, 207, 248)
-        self.last_x = self.x
-        self.last_y = self.y
-        self.last_z = z
 
     def move(self):
         self.deltaZ += 0.025
