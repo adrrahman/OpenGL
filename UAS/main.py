@@ -157,19 +157,14 @@ while 1:
 
     for p in particles:
         p.move()
-        # glTranslate(p.x, p.y, - zpos)
-        # glBindBuffer (GL_ARRAY_BUFFER, vbo)
-        # glVertexPointer (3, GL_FLOAT, 0, None)
-        # glDrawArrays (GL_TRIANGLES, 0, 3)
         glColor3f(1, 1, 1)
-        # utils.draw_circle(p.x, p.y, 0.05, 100, True)
         utils.draw_cube(p.x, p.y, p.z)
 
     for part in range(50):
         ptemp = hujan[part]
         ptemp.move()
         glColor3f(1, 207, 248)
-        utils.draw_cube(ptemp.x,ptemp.y,ptemp.z)
+        utils.draw_sphere(ptemp.x,ptemp.y,ptemp.z)
 
     pygame.display.flip()
 
