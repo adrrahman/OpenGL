@@ -155,8 +155,7 @@ while 1:
         glColor3f(1, 1, 1)
         utils.draw_cube(k.x, k.y, k.z)
 
-    for idx in range(50):
-        butir = partikel_hujan[idx]
+    for butir in partikel_hujan:
         butir.move()
         glColor3f(1, 207, 248)
         utils.draw_cube(butir.x,butir.y,butir.z)
