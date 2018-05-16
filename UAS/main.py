@@ -58,7 +58,7 @@ def Ground():
     x = 0
     for vertex in ground_vertices:
         x += 1
-        glColor3fv((0, 1, 1))
+        glColor3fv((0.37, 0.25, 0.13))
         glVertex3fv(vertex)
     glEnd()
 
