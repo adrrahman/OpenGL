@@ -1,6 +1,7 @@
 import sys
 import random
 import grafikautils as utils
+# import math
 from pygame.constants import *
 from OpenGL.GLU import *
 from ctypes import *
@@ -30,16 +31,16 @@ class hujan():
         self.x = random.uniform(-10,10)
         self.y = random.uniform(-10,10)
         self.z = random.uniform(1,8)
+        self.deltaZ = 0.05
         self.color = (1, 207, 248)
-        self.last_x = self.x
-        self.last_y = self.y
-        self.last_z = z
 
     def move(self):
+        self.deltaZ += 0.025
         if (self.z < -0.4):
             self.z = 8
+            self.deltaZ = 0.05
         else:
-            self.z = self.z - 0.2
+            self.z -= self.deltaZ
 
 pygame.init()
 viewport = (800,600)
@@ -88,8 +89,10 @@ for part in range(40):
 for z_hujan in range(50):
     partikel_hujan.append(hujan(z_hujan))
 
+glClearColor(0, 0.07, 0.2, 0.0)
 while 1:
-    clock.tick(30)
+    # clock.tick(30)
+
     for e in pygame.event.get():
         if e.type == QUIT:
             sys.exit()
