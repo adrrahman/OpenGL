@@ -74,17 +74,6 @@ tx, ty = (0,0)
 zpos = 5
 rotate = move = False
 
-partikel_knalpot = []
-partikel_hujan = []
-
-for part in range(40):
-    partikel_knalpot.append(knalpot())
-
-for part in range(50):
-    ssz = 0.5 + part
-    temp = hujan(ssz)
-    partikel_hujan.append(temp)
-
 vertices = [ 0.0, 1.0, 0.0,  0.0, 0.0, 0.0,  1.0, 1.0, 0.0 ]
 vbo = glGenBuffers (1)
 glBindBuffer (GL_ARRAY_BUFFER, vbo)
@@ -92,10 +81,17 @@ glBufferData (GL_ARRAY_BUFFER, len(vertices)*4, (c_float*len(vertices))(*vertice
 
 px, py = (tx/20, ty/20)
 
+partikel_knalpot = []
+partikel_hujan = []
+
+for part in range(40):
+    partikel_knalpot.append(knalpot())
+
+for z_hujan in range(50):
+    partikel_hujan.append(hujan(z_hujan))
+
 while 1:
     clock.tick(30)
-    
-    # srf.fill((255, 255, 255))
     for e in pygame.event.get():
         if e.type == QUIT:
             sys.exit()
@@ -126,7 +122,6 @@ while 1:
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     glLoadIdentity()
 
-    # RENDER OBJECT
     glTranslate(tx/20., ty/20., - zpos)
     glLightfv(GL_LIGHT0, GL_AMBIENT, (intensity, intensity, intensity, 1.0))
     glRotate(-90, 1, 0, 0)
@@ -134,16 +129,16 @@ while 1:
     glRotate(rx, 0, 0, 1)
     glCallList(obj.gl_list)
 
-    for p in partikel_knalpot:
-        p.move()
+    for k in partikel_knalpot:
+        k.move()
         glColor3f(1, 1, 1)
-        utils.draw_cube(p.x, p.y, p.z)
+        utils.draw_cube(k.x, k.y, k.z)
 
-    for part in range(50):
-        ptemp = partikel_hujan[part]
-        ptemp.move()
+    for idx in range(50):
+        butir = partikel_hujan[idx]
+        butir.move()
         glColor3f(1, 207, 248)
-        utils.draw_cube(ptemp.x,ptemp.y,ptemp.z)
+        utils.draw_cube(butir.x,butir.y,butir.z)
 
     clock.tick()
     fps = clock.get_fps()
