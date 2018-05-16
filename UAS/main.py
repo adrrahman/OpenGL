@@ -7,6 +7,7 @@ import sys, pygame, random
 import grafikautils as utils
 from pygame.locals import *
 from pygame.constants import *
+from pygame.time import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from ctypes import *
@@ -164,11 +165,10 @@ while 1:
         ptemp = hujan[part]
         ptemp.move()
         glColor3f(1, 207, 248)
-        utils.draw_sphere(ptemp.x,ptemp.y,ptemp.z)
+        utils.draw_cube(ptemp.x,ptemp.y,ptemp.z)
+
+    clock.tick()
+    fps = clock.get_fps()
+    print(fps)
 
     pygame.display.flip()
-
-# TODO:
-#   - naikin z starting position dari asep
-#   - bikin atribut pos z
-#   - 3d particle?
