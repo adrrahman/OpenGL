@@ -2,8 +2,6 @@ import sys
 import random
 import grafikautils as utils
 from pygame.constants import *
-from pygame.time import *
-from OpenGL.GL import *
 from OpenGL.GLU import *
 from ctypes import *
 from OBJFileLoader import *
