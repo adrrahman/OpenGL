@@ -1,63 +1,46 @@
-# Basic OBJ file viewer. needs objloader from:
-#  http://www.pygame.org/wiki/OBJFileLoader
-# LMB + move: rotate
-# RMB + move: pan
-# Scroll wheel: zoom in/out
-import sys, pygame, random
+import sys
+import random
 import grafikautils as utils
-from pygame.locals import *
 from pygame.constants import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from ctypes import *
+from OBJFileLoader import *
 
-# IMPORT OBJECT LOADER
-from objloader import *
-
-white = (255, 255, 255)
-black = (0,0,0)
-grey = (128,128,128)
-blue = (1, 207, 248)
-
-class Particle():
-    def __init__(self, startx, starty, startz, col):
-        self.x = startx
-        self.y = starty
-        self.z = startz
-        self.col = col
-        self.sx = startx
-        self.sy = starty
-        self.sz = startz
+class knalpot():
+    def __init__(self):
+        self.x = 0.5
+        self.y = -2.4
+        self.z = 0.5
+        self.color = (173, 173, 133)
+        self.last_x = 0.5
+        self.last_y = -2.4
+        self.last_z = 0.5
 
     def move(self):
         if self.y < -10:
-            self.x=self.sx
-            self.y=self.sy
-            self.z=self.sz
-
+            self.x=self.last_x
+            self.y=self.last_y
+            self.z=self.last_z
         else:
-            self.y-=random.uniform(0.2, 0.7)
+            self.y-=random.uniform(0, 2)
+        self.x+=random.uniform(-0.05, 0.05)
 
-        self.x+=random.uniform(-0.1, 0.1)
-        # self.z+=random.uniform(-0.1, 0.1)
-
-class ParticleHujan():
-    def __init__(self,startz):
+class hujan():
+    def __init__(self,z):
         self.x = random.uniform(-10,10)
         self.y = random.uniform(-10,10)
         self.z = random.uniform(1,8)
-        self.initz = self.z
-        self.col = blue
-        self.sx = self.x
-        self.sy = self.y
-        self.sz = startz
+        self.color = (1, 207, 248)
+        self.last_x = self.x
+        self.last_y = self.y
+        self.last_z = z
 
     def move(self):
         if (self.z < -0.4):
             self.z = 8
         else:
             self.z = self.z - 0.2
-
 
 pygame.init()
 viewport = (800,600)
@@ -73,10 +56,8 @@ glEnable(GL_LIGHTING)
 glEnable(GL_COLOR_MATERIAL)
 glEnable(GL_DEPTH_TEST)
 glEnableClientState (GL_VERTEX_ARRAY)
-glShadeModel(GL_SMOOTH)           # most obj files expect to be smooth-shaded
-
-# LOAD OBJECT AFTER PYGAME INIT
-obj = OBJ(sys.argv[1], swapyz=True)
+glShadeModel(GL_SMOOTH)
+obj = OBJ("Car.obj", swapyz=True)
 
 clock = pygame.time.Clock()
 
@@ -92,19 +73,16 @@ tx, ty = (0,0)
 zpos = 5
 rotate = move = False
 
-particles = []
-hujan = []
+partikel_knalpot = []
+partikel_hujan = []
 
-for part in range(10):
-    # if part % 2 > 0: col = white
-    # else: col = grey
-    col = white
-    particles.append( Particle(0, -2.2, 0, col) )
+for part in range(200):
+    partikel_knalpot.append(knalpot())
 
-for part in range(50):
+for part in range(70):
     ssz = 0.5 + part
-    temp = ParticleHujan(ssz)
-    hujan.append(temp)
+    temp = hujan(ssz)
+    partikel_hujan.append(temp)
 
 vertices = [ 0.0, 1.0, 0.0,  0.0, 0.0, 0.0,  1.0, 1.0, 0.0 ]
 vbo = glGenBuffers (1)
@@ -116,7 +94,7 @@ px, py = (tx/20, ty/20)
 while 1:
     clock.tick(30)
     
-    # srf.fill(white)
+    # srf.fill((255, 255, 255))
     for e in pygame.event.get():
         if e.type == QUIT:
             sys.exit()
@@ -155,20 +133,15 @@ while 1:
     glRotate(rx, 0, 0, 1)
     glCallList(obj.gl_list)
 
-    for p in particles:
+    for p in partikel_knalpot:
         p.move()
         glColor3f(1, 1, 1)
         utils.draw_cube(p.x, p.y, p.z)
 
-    for part in range(50):
-        ptemp = hujan[part]
+    for part in range(70):
+        ptemp = partikel_hujan[part]
         ptemp.move()
         glColor3f(1, 207, 248)
-        utils.draw_sphere(ptemp.x,ptemp.y,ptemp.z)
+        utils.draw_cube(ptemp.x,ptemp.y,ptemp.z)
 
     pygame.display.flip()
-
-# TODO:
-#   - naikin z starting position dari asep
-#   - bikin atribut pos z
-#   - 3d particle?
