@@ -2,6 +2,7 @@ import sys
 import random
 import grafikautils as utils
 from pygame.constants import *
+from pygame.time import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from ctypes import *
@@ -76,10 +77,10 @@ rotate = move = False
 partikel_knalpot = []
 partikel_hujan = []
 
-for part in range(200):
+for part in range(40):
     partikel_knalpot.append(knalpot())
 
-for part in range(70):
+for part in range(50):
     ssz = 0.5 + part
     temp = hujan(ssz)
     partikel_hujan.append(temp)
@@ -138,10 +139,13 @@ while 1:
         glColor3f(1, 1, 1)
         utils.draw_cube(p.x, p.y, p.z)
 
-    for part in range(70):
+    for part in range(50):
         ptemp = partikel_hujan[part]
         ptemp.move()
         glColor3f(1, 207, 248)
         utils.draw_cube(ptemp.x,ptemp.y,ptemp.z)
 
+    clock.tick()
+    fps = clock.get_fps()
+    print(fps)
     pygame.display.flip()
